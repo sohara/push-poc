@@ -1,0 +1,14 @@
+{
+  "name": "push-messaging-and-notifications",
+  "version": "1.0.0",
+  "description": "Push Messaging and Notification Sample ===",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sean O'Hara",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
