@@ -48,6 +48,7 @@ function sendSubscriptionToServer(subscription) {
 // this to send a PUSH request directly to the endpoint
 function showCurlCommand(mergedEndpoint) {
   // The curl command to trigger a push message straight from GCM
+  window.Demo.debug.log('starting\n');
   if (mergedEndpoint.indexOf(GCM_ENDPOINT) !== 0) {
     window.Demo.debug.log('This browser isn\'t currently ' +
       'supported for this demo');
@@ -56,6 +57,20 @@ function showCurlCommand(mergedEndpoint) {
 
   var endpointSections = mergedEndpoint.split('/');
   var subscriptionId = endpointSections[endpointSections.length - 1];
+  var data = {subscriptionId: subscriptionId};
+  $.ajax({
+    url: 'api/subscriptions',
+    dataType: 'json',
+    type: 'post',
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function(data, textStatus, jqxhr) {
+      console.log(data);
+    },
+    error: function(jqxhr, textStatus, err) {
+      console.error(err);
+    }
+  });
 
   var curlCommand = 'curl --header "Authorization: key=' + API_KEY +
     '" --header Content-Type:"application/json" ' + GCM_ENDPOINT +
@@ -150,6 +165,7 @@ function subscribe() {
 
 // Once the service worker is registered set the initial state
 function initialiseState() {
+  window.Demo.debug.log('Initializing state\n');
   // Are Notifications supported in the service worker?
   if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
     window.Demo.debug.log('Notifications aren\'t supported.');
@@ -201,6 +217,7 @@ function initialiseState() {
 }
 
 window.addEventListener('load', function() {
+  window.Demo.debug.log('Load event\n');
   var pushButton = document.querySelector('.js-push-button');
   pushButton.addEventListener('click', function() {
     if (isPushEnabled) {
@@ -210,10 +227,12 @@ window.addEventListener('load', function() {
     }
   });
 
+  window.Demo.debug.log('About to verify service worker');
+  window.Demo.debug.log(navigator.serviceWorker.register);
   // Check that service workers are supported, if so, progressively
   // enhance and add push messaging support, otherwise continue without it.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js')
+    navigator.serviceWorker.register('/service-worker.js')
     .then(initialiseState);
   } else {
     window.Demo.debug.log('Service workers aren\'t supported in this browser.');
