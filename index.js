@@ -7,6 +7,13 @@ var Subscription = require('./models/subscription');
 var request = require('request');
 var gcmAPIKey = 'AIzaSyAbpf2LS3le6y-zhZW0UgjWmhaZBc0u6T8';
 var GCM_ENDPOINT = 'https://android.googleapis.com/gcm/send';
+var https = require('https');
+var fs = require('fs');
+
+https.createServer({
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+}, app).listen(55555);
 
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
