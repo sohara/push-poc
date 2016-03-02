@@ -2,7 +2,10 @@
 <ul>
 {{#each subscriptions}}
   <li>
-    {{{subscriptionId}}}
+    <a href="#" data-subscription-id="{{{subscriptionId}}}">{{subscriptionId}}</a>
   </li>
 {{/each}}
 </ul>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="config.js"></script>
+<script src="subscriptions.js"></script>
