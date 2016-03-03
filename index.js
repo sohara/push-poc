@@ -9,14 +9,19 @@ var gcmAPIKey = 'AIzaSyAbpf2LS3le6y-zhZW0UgjWmhaZBc0u6T8';
 var GCM_ENDPOINT = 'https://android.googleapis.com/gcm/send';
 var https = require('https');
 var fs = require('fs');
+var path = require('path');
 
-https.createServer({
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-}, app).listen(55555);
-
-app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
+// https.createServer({
+//   key: fs.readFileSync('key.pem'),
+//   cert: fs.readFileSync('cert.pem')
+// }, app).listen(55555);
+app.engine('handlebars', expressHandlebars({
+  defaultLayout: 'main',
+  layoutsDir: path.resolve(__dirname, 'views/layouts')
+}));
+// app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+app.set('views', __dirname + '/views');
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
